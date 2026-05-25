@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relatório de Marketing · Base Mobile & BEEGOW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="brand-pill">
+        <span class="dot"></span>
+        <span>BASE MOBILE</span>
+        <span class="sep">·</span>
+        <span class="bee">BEEGOW</span>
+      </div>
+    </div>
+    <h1 class="login-title">Relatório de<br/>Marketing</h1>
+    <p class="login-sub">Acesso restrito ao time interno</p>
+    <div class="login-form">
+      <div class="field">
+        <label>Usuário</label>
+        <input type="text" id="loginUser" autocomplete="off" placeholder="seu.usuario"/>
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" id="loginPass" placeholder="••••••••"/>
+      </div>
+      <button class="btn-login" onclick="doLogin()">Entrar <i class="ti ti-arrow-right"></i></button>
+      <div class="login-error" id="loginErr"></div>
+    </div>
+    <div class="login-footer">Base Mobile &amp; BEEGOW © 2025 · Uso interno</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sb-dot"></div>
+      <div>
+        <div class="sb-name">Base Mobile</div>
+        <div class="sb-sub">& BEEGOW</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-tab="resumo">
+        <i class="ti ti-layout-dashboard"></i><span>Sumário executivo</span>
+      </button>
+      <button class="nav-item" data-tab="site">
+        <i class="ti ti-world"></i><span>Site &amp; tráfego</span>
+      </button>
+      <button class="nav-item" data-tab="social">
+        <i class="ti ti-brand-instagram"></i><span>Redes sociais</span>
+      </button>
+      <button class="nav-item" data-tab="crm">
+        <i class="ti ti-mail"></i><span>CRM &amp; HubSpot</span>
+      </button>
+      <button class="nav-item" data-tab="comparativo">
+        <i class="ti ti-trending-up"></i><span>Comparativo 6m</span>
+      </button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="btn-newmonth" onclick="openForm()">
+        <i class="ti ti-plus"></i> Novo mês
+      </button>
+      <button class="btn-logout" onclick="doLogout()">
+        <i class="ti ti-logout"></i> Sair
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="ti ti-menu-2"></i></button>
+        <div>
+          <div class="topbar-title" id="topbarTitle">Sumário executivo</div>
+          <div class="topbar-month" id="topbarMonth">Nenhum dado</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-icon" onclick="openForm()" title="Novo mês">
+          <i class="ti ti-plus"></i>
+        </button>
+        <button class="btn-export" onclick="exportPDF()" id="btnExport" title="Exportar relatório PDF">
+          <i class="ti ti-file-type-pdf"></i> Exportar PDF
+        </button>
+        <div class="avatar" id="avatarLabel">RB</div>
+      </div>
+    </header>
+
+    <!-- MODAL FORM -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeFormOutside(event)">
+      <div class="modal" id="modalForm">
+        <div class="modal-head">
+          <div class="modal-title"><i class="ti ti-database"></i> Inserir dados do mês</div>
+          <button class="modal-close" onclick="closeForm()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="field-row">
+            <div class="field">
+              <label>Mês de referência</label>
+              <select id="inputMes">
+                <option>Jan/2025</option><option>Fev/2025</option><option>Mar/2025</option>
+                <option>Abr/2025</option><option>Mai/2025</option><option>Jun/2025</option>
+                <option>Jul/2025</option><option>Ago/2025</option><option>Set/2025</option>
+                <option>Out/2025</option><option>Nov/2025</option><option>Dez/2025</option>
+                <option>Jan/2026</option><option>Fev/2026</option><option>Mar/2026</option>
+                <option selected>Abr/2026</option><option>Mai/2026</option><option>Jun/2026</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-world"></i> Analytics do site</div>
+          <div class="field-row">
+            <div class="field"><label>Usuários únicos</label><input type="number" id="f_usuarios" placeholder="ex: 4200"/></div>
+            <div class="field"><label>Sessões totais</label><input type="number" id="f_sessoes" placeholder="ex: 6800"/></div>
+            <div class="field"><label>Bounce rate (%)</label><input type="number" id="f_bounce" placeholder="ex: 48.5"/></div>
+            <div class="field"><label>Tempo médio (s)</label><input type="number" id="f_tempo" placeholder="ex: 145"/></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Orgânico (%)</label><input type="number" id="f_org" placeholder="42"/></div>
+            <div class="field"><label>Pago (%)</label><input type="number" id="f_pago" placeholder="18"/></div>
+            <div class="field"><label>Direto (%)</label><input type="number" id="f_direto" placeholder="25"/></div>
+            <div class="field"><label>Social (%)</label><input type="number" id="f_social_t" placeholder="15"/></div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-brand-instagram"></i> Instagram BEEGOW</div>
+          <div class="field-row">
+            <div class="field"><label>Seguidores</label><input type="number" id="f_bg_seg" placeholder="3200"/></div>
+            <div class="field"><label>Alcance</label><input type="number" id="f_bg_alc" placeholder="12000"/></div>
+            <div class="field"><label>Engajamento (%)</label><input type="number" id="f_bg_eng" placeholder="5.2"/></div>
+            <div class="field"><label>Impressões</label><input type="number" id="f_bg_imp" placeholder="28000"/></div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-brand-instagram"></i> Instagram Base Mobile</div>
+          <div class="field-row">
+            <div class="field"><label>Seguidores</label><input type="number" id="f_bm_seg" placeholder="1800"/></div>
+            <div class="field"><label>Alcance</label><input type="number" id="f_bm_alc" placeholder="9000"/></div>
+            <div class="field"><label>Engajamento (%)</label><input type="number" id="f_bm_eng" placeholder="3.8"/></div>
+            <div class="field"><label>Impressões</label><input type="number" id="f_bm_imp" placeholder="21000"/></div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-brand-linkedin"></i> LinkedIn Base Mobile</div>
+          <div class="field-row">
+            <div class="field"><label>Seguidores</label><input type="number" id="f_li_seg" placeholder="950"/></div>
+            <div class="field"><label>Impressões</label><input type="number" id="f_li_imp" placeholder="7500"/></div>
+            <div class="field"><label>Novos seguidores</label><input type="number" id="f_li_nov" placeholder="65"/></div>
+            <div class="field"><label>Interações artigos</label><input type="number" id="f_li_art" placeholder="340"/></div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-mail"></i> CRM / HubSpot Newsletter</div>
+          <div class="field-row">
+            <div class="field"><label>Base total</label><input type="number" id="f_hs_base" placeholder="2400"/></div>
+            <div class="field"><label>Open Rate (%)</label><input type="number" id="f_hs_open" placeholder="32.5"/></div>
+            <div class="field"><label>CTR (%)</label><input type="number" id="f_hs_ctr" placeholder="8.2"/></div>
+            <div class="field"><label>Conversões</label><input type="number" id="f_hs_conv" placeholder="18"/></div>
+          </div>
+
+          <div class="form-section"><i class="ti ti-notes"></i> Destaques do mês</div>
+          <div class="field">
+            <label>Resumo executivo (texto livre)</label>
+            <textarea id="f_summary" rows="4" placeholder="Ex: Lançamento da campanha ECA Digital gerou +40% de engajamento no Instagram BEEGOW. Primeiro artigo de liderança no LinkedIn com 1.200 visualizações..."></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-cancel" onclick="closeForm()">Cancelar</button>
+          <button class="btn-save" onclick="saveMonth()"><i class="ti ti-device-floppy"></i> Salvar dados</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content" id="tab-resumo">
+      <div class="empty-state" id="emptyState">
+        <i class="ti ti-database-off"></i>
+        <h2>Nenhum dado cadastrado</h2>
+        <p>Clique em <strong>+ Novo mês</strong> para inserir os dados do primeiro período.</p>
+        <button class="btn-primary" onclick="openForm()"><i class="ti ti-plus"></i> Inserir primeiro mês</button>
+      </div>
+      <div id="resumoContent" style="display:none">
+        <div class="highlight-card" id="highlightCard">
+          <div class="hc-label"><i class="ti ti-flag"></i> Destaques · <span id="hlMes"></span></div>
+          <p id="hlText"></p>
+        </div>
+        <div class="kpi-grid" id="resumoKpis"></div>
+        <div class="charts-row">
+          <div class="chart-box">
+            <div class="chart-box-title">Sessões × bounce rate (6 meses)</div>
+            <div class="legend" id="leg-sessoes"></div>
+            <div class="chart-wrap h240"><canvas id="chartResumoSessoes" role="img" aria-label="Sessões e bounce rate">Sessões e bounce rate por mês</canvas></div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-box-title">Seguidores BEEGOW vs BM (6 meses)</div>
+            <div class="legend" id="leg-segs"></div>
+            <div class="chart-wrap h240"><canvas id="chartResumoSegs" role="img" aria-label="Seguidores por plataforma">Seguidores</canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-site" style="display:none">
+      <div class="section-header"><i class="ti ti-world"></i> Analytics do site <span class="badge" id="siteBadge"></span></div>
+      <div class="kpi-grid" id="siteKpis"></div>
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-box-title">Canais de aquisição</div>
+          <div class="legend" id="leg-aquis"></div>
+          <div class="chart-wrap h220"><canvas id="chartAquis" role="img" aria-label="Canais de aquisição">Canais de aquisição</canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">Usuários únicos (6 meses)</div>
+          <div class="legend" id="leg-usuarios"></div>
+          <div class="chart-wrap h220"><canvas id="chartUsuarios" role="img" aria-label="Usuários únicos por mês">Usuários únicos</canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-social" style="display:none">
+      <div class="section-header"><i class="ti ti-brand-instagram"></i> BEEGOW · Instagram <span class="badge" id="bgBadge"></span></div>
+      <div class="kpi-grid" id="bgKpis"></div>
+      <div class="charts-row">
+        <div class="chart-box full">
+          <div class="chart-box-title">Crescimento de seguidores BEEGOW (6 meses)</div>
+          <div class="legend" id="leg-bgSeg"></div>
+          <div class="chart-wrap h200"><canvas id="chartBgSeg" role="img" aria-label="Seguidores BEEGOW">Seguidores BEEGOW</canvas></div>
+        </div>
+      </div>
+      <div class="section-header" style="margin-top:1.5rem"><i class="ti ti-brand-instagram"></i> Base Mobile · Instagram <span class="badge" id="bmBadge"></span></div>
+      <div class="kpi-grid" id="bmKpis"></div>
+      <div class="section-header" style="margin-top:1.5rem"><i class="ti ti-brand-linkedin"></i> Base Mobile · LinkedIn <span class="badge" id="liBadge"></span></div>
+      <div class="kpi-grid" id="liKpis"></div>
+    </div>
+
+    <div class="tab-content" id="tab-crm" style="display:none">
+      <div class="section-header"><i class="ti ti-mail"></i> HubSpot · Newsletter &amp; CRM <span class="badge" id="crmBadge"></span></div>
+      <div class="kpi-grid" id="crmKpis"></div>
+      <div class="charts-row">
+        <div class="chart-box full">
+          <div class="chart-box-title">Open Rate &amp; CTR (6 meses)</div>
+          <div class="legend" id="leg-crm"></div>
+          <div class="chart-wrap h240"><canvas id="chartCrm" role="img" aria-label="Open rate e CTR">Open rate e CTR</canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-comparativo" style="display:none">
+      <div class="section-header"><i class="ti ti-trending-up"></i> Comparativo — últimos 6 meses</div>
+      <div class="charts-row">
+        <div class="chart-box full">
+          <div class="chart-box-title">Usuários únicos no site</div>
+          <div class="chart-wrap h220"><canvas id="chartComp1" role="img" aria-label="Usuários únicos por mês">Usuários únicos</canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-box-title">Seguidores BEEGOW vs Base Mobile</div>
+          <div class="legend" id="leg-comp2"></div>
+          <div class="chart-wrap h200"><canvas id="chartComp2" role="img" aria-label="Seguidores por plataforma">Seguidores</canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">Conversões HubSpot</div>
+          <div class="chart-wrap h200"><canvas id="chartComp3" role="img" aria-label="Conversões por mês">Conversões</canvas></div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-box full">
+          <div class="chart-box-title">Engajamento Instagram — BEEGOW vs Base Mobile (%)</div>
+          <div class="legend" id="leg-comp4"></div>
+          <div class="chart-wrap h200"><canvas id="chartComp4" role="img" aria-label="Engajamento por plataforma">Engajamento</canvas></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="app.js"></script>
+
+<!-- PDF EXPORT OVERLAY -->
+<div id="pdfOverlay" style="display:none;position:fixed;inset:0;background:rgba(14,42,78,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="background:#fff;border-radius:14px;padding:32px 40px;text-align:center;max-width:340px;width:90%">
+    <div id="pdfSpinIcon" style="font-size:40px;color:#0E2A4E;margin-bottom:12px"><i class="ti ti-file-type-pdf"></i></div>
+    <div style="font-size:16px;font-weight:600;color:#0E2A4E;margin-bottom:6px" id="pdfStatusTitle">Gerando relatório PDF</div>
+    <div style="font-size:13px;color:#6B7A90;margin-bottom:18px" id="pdfStatusMsg">Aguarde, capturando seções...</div>
+    <div style="background:#F0F2F7;border-radius:8px;height:6px;overflow:hidden">
+      <div id="pdfProgress" style="background:#7ABE1E;height:6px;width:0%;transition:width .4s;border-radius:8px"></div>
+    </div>
+    <div style="font-size:12px;color:#9BA8BB;margin-top:8px" id="pdfProgressLabel">0%</div>
+  </div>
+</div>
+
+<!-- PDF PRINT CONTAINER (hidden, used for rendering) -->
+<div id="pdfContainer" style="display:none;position:absolute;left:-9999px;top:0;width:794px;background:#fff;font-family:'Space Grotesk',sans-serif;"></div>
+
+</body>
+</html>
